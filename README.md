@@ -5,6 +5,7 @@
 5.generowanie planszy przez komputer (najtrudniejsze)
 6.sprawdzanie czy trafiono pod współrzędnymi
 7.sprawdzanie ilości zbitych statków jako komórek
+8.ekran podsumowania
 
 ?.dodanie kursora sterowanego strzałkami
 
