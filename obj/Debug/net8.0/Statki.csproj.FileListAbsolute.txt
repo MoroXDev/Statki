@@ -12,3 +12,4 @@ C:\Users\1ap\Desktop\Statki\obj\Debug\net8.0\refint\Statki.dll
 C:\Users\1ap\Desktop\Statki\obj\Debug\net8.0\Statki.pdb
 C:\Users\1ap\Desktop\Statki\obj\Debug\net8.0\Statki.genruntimeconfig.cache
 C:\Users\1ap\Desktop\Statki\obj\Debug\net8.0\ref\Statki.dll
+C:\Users\1ap\Desktop\Statki\obj\Debug\net8.0\Statki.sourcelink.json
