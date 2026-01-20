@@ -1,17 +1,16 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\1ap\\Desktop\\Statki\\",
+  "WorkspaceRootPath": "C:\\Users\\barte\\OneDrive\\Pulpit\\Statki\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F10E4175-2C60-4B8C-BD5B-703F42FFE03A}|Statki.csproj|c:\\users\\1ap\\desktop\\statki\\statki.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F10E4175-2C60-4B8C-BD5B-703F42FFE03A}|Statki.csproj|c:\\users\\barte\\onedrive\\pulpit\\statki\\statki.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F10E4175-2C60-4B8C-BD5B-703F42FFE03A}|Statki.csproj|solutionrelative:statki.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F10E4175-2C60-4B8C-BD5B-703F42FFE03A}|Statki.csproj|c:\\users\\1ap\\desktop\\statki\\display.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F10E4175-2C60-4B8C-BD5B-703F42FFE03A}|Statki.csproj|solutionrelative:display.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\1ap\\Desktop\\Statki\\Display.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F10E4175-2C60-4B8C-BD5B-703F42FFE03A}|Statki.csproj|c:\\users\\1ap\\desktop\\statki\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F10E4175-2C60-4B8C-BD5B-703F42FFE03A}|Statki.csproj|c:\\users\\barte\\onedrive\\pulpit\\statki\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F10E4175-2C60-4B8C-BD5B-703F42FFE03A}|Statki.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -22,15 +21,27 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 3,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Statki.cs",
-              "DocumentMoniker": "C:\\Users\\1ap\\Desktop\\Statki\\Statki.cs",
+              "DocumentMoniker": "C:\\Users\\barte\\OneDrive\\Pulpit\\Statki\\Statki.cs",
               "RelativeDocumentMoniker": "Statki.cs",
-              "ToolTip": "C:\\Users\\1ap\\Desktop\\Statki\\Statki.cs",
+              "ToolTip": "C:\\Users\\barte\\OneDrive\\Pulpit\\Statki\\Statki.cs",
               "RelativeToolTip": "Statki.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -42,26 +53,23 @@
               "DocumentIndex": 1,
               "Title": "Display.cs",
               "DocumentMoniker": "C:\\Users\\1ap\\Desktop\\Statki\\Display.cs",
-              "RelativeDocumentMoniker": "Display.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\1ap\\Desktop\\Statki\\Display.cs",
               "ToolTip": "C:\\Users\\1ap\\Desktop\\Statki\\Display.cs",
-              "RelativeToolTip": "Display.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAcAAAAAAAAAA==",
+              "RelativeToolTip": "..\\..\\..\\..\\1ap\\Desktop\\Statki\\Display.cs",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-14T08:06:32.09Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-14T08:06:32.09Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
               "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\1ap\\Desktop\\Statki\\Program.cs",
+              "DocumentMoniker": "C:\\Users\\barte\\OneDrive\\Pulpit\\Statki\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\Users\\1ap\\Desktop\\Statki\\Program.cs",
+              "ToolTip": "C:\\Users\\barte\\OneDrive\\Pulpit\\Statki\\Program.cs",
               "RelativeToolTip": "Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-14T07:36:54.898Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-14T07:36:54.898Z"
             }
           ]
         }
