@@ -68,7 +68,6 @@ class Statki
                     }
                 }
             }
-
         }
     }
 
@@ -114,16 +113,22 @@ class Statki
 
     bool TryAddShipCells(int x, int y, int cell_count, Vector2 dir)
     {
+        Vector2[] correct_indexes = new Vector2[cell_count];
         for (int i = 0; i < cell_count; i++)
         {
             if (Gen_board[x + (int)dir.X * cell_count, y + (int)dir.Y * cell_count] == '~')
             {
-                Gen_board[x + (int)dir.X * cell_count, y + (int)dir.Y * cell_count] = 'S';
+                correct_indexes[i] = new Vector2(x + (int)dir.X * cell_count, y + (int)dir.Y * cell_count);
             }
             else
             {
                 return false;
             }
+        }
+
+        foreach (var index in correct_indexes)
+        {
+            Gen_board[(int)index.X, (int)index.Y] = 'S';
         }
         return true;
     }
