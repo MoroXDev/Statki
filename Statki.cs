@@ -1,7 +1,4 @@
-﻿using System;
-using System.Security.Cryptography;
-
-class Statki
+﻿class Statki
 {
     char[,] playerBoard = new char[10, 10];
 
