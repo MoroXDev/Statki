@@ -1,8 +1,8 @@
-﻿using System.Numerics;
+using System.Numerics;
 
 class Statki
 {
-    char[,] Gen_board = new char[10, 10];
+    int[,] Gen_board = new int[10, 10];
 
     public Statki()
     {
@@ -10,14 +10,14 @@ class Statki
         {
             for (int j = 0; j < 10; j++)
             {
-                Gen_board[i, j] = '~';
+                Gen_board[i, j] = (int)CellState.Water;
             }
         }
     }
 
     public void Run()
     {
-        generateboards();
+        //generateboards();
         bool isExit = false;
 
         while (!isExit)
@@ -37,12 +37,36 @@ class Statki
         {
             for (int j = 0; j < 10; j++)
             {
-                Console.Write(Gen_board[i, j]);
+                Console.ResetColor();
+                Console.Write((char)Gen_board[i, j]);
+                switch (Gen_board[i, j])
+                {
+                    case (int)CellState.Hit:
+                        Console.BackgroundColor = ConsoleColor.Blue;
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.Write("|X|");
+                        break;
+                    case (int)CellState.Ship:
+                        Console.BackgroundColor = ConsoleColor.Blue;
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write("|S|");
+                        break;
+                    case (int)CellState.Miss:
+                        Console.BackgroundColor = ConsoleColor.Blue;
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.Write("|O|");
+                        break;
+                    default:
+                        Console.BackgroundColor = ConsoleColor.Blue;
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        Console.Write("|~|");
+                        break;
+
+                }
             }
             Console.WriteLine();
         }
     }
-
     void generateboards()
     {
         int[] rand_row = new int[10] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
@@ -88,11 +112,11 @@ class Statki
 
     bool TryAddShipAt(int x, int y, int ship_type)
     {
-        if (Gen_board[x, y] == '~')
+        if (GetCellAt(x, y) == (int)CellState.Water)
         {
             int cell_count = 5 - ship_type;
 
-            Vector2[] directions = new Vector2[]
+            Vector2[] directions =
             {
                 new Vector2(-1, 0), // LEFT
                 new Vector2(1, 0),  // RIGHT
@@ -116,7 +140,7 @@ class Statki
         Vector2[] correct_indexes = new Vector2[cell_count];
         for (int i = 0; i < cell_count; i++)
         {
-            if (Gen_board[x + (int)dir.X * cell_count, y + (int)dir.Y * cell_count] == '~')
+            if (GetCellAt(x + (int)dir.X * cell_count, y + (int)dir.Y * cell_count) == (int)CellState.Water)
             {
                 correct_indexes[i] = new Vector2(x + (int)dir.X * cell_count, y + (int)dir.Y * cell_count);
             }
@@ -128,15 +152,27 @@ class Statki
 
         foreach (var index in correct_indexes)
         {
-            Gen_board[(int)index.X, (int)index.Y] = 'S';
+            Gen_board[(int)index.X, (int)index.Y] = (int)CellState.Ship;
         }
         return true;
     }
 
-    bool IsInsideBoard(int x, int y)
+    int GetCellAt(int x, int y)
     {
-        return x >= 0 && x < 10 && y >= 0 && y < 10;
+        if (x >= 0 && x < 10 && y >= 0 && y < 10)
+        {
+            return (char)Gen_board[x, y];
+        }
+        return (int)CellState.OutOfBounds;
     }
 }
 
+enum CellState
+{
+    Water = 0,
+    Hit = 1,
+    Ship = 2,
+    Miss = 3,
+    OutOfBounds = 4
+}
 
