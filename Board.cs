@@ -8,11 +8,12 @@ class Board
         int[] rand_row = new int[10] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
         int[] rand_col = new int[10] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
         Random rand = new Random();
-
-        bool ships_fit = true;
-        while (!ships_fit)
+  
+        bool ships_inserted;
+        do       
         {
-            ships_fit = true;
+            ships_inserted = true;
+            init(); 
             for (int ship_type = 1; ship_type < 5; ship_type++)
             {
                 for (int ships_i = 0; ships_i < ship_type; ships_i++)
@@ -22,13 +23,14 @@ class Board
 
                     if (!TryAddShipRandomized(ref rand_row, ref rand_col, ship_type))
                     {
-                        ships_fit = false;
+                        ships_inserted = false;
                         ship_type = 5; // break loop
                         ships_i = ship_type; // break loop
                     }
                 }
             }
         }
+        while (!ships_inserted);
     }
 
     bool TryAddShipRandomized(ref int[] rand_row, ref int[] rand_col, int ship_type)
@@ -104,12 +106,12 @@ class Board
 
     public void Display()
     {
+        Console.ResetColor();
         Console.Clear();
         for (int i = 0; i < 10; i++)
         {
             for (int j = 0; j < 10; j++)
             {
-                Console.ResetColor();
                 Console.Write((char)value[i, j]);
                 switch (value[i, j])
                 {
@@ -140,7 +142,7 @@ class Board
         }
     }
 
-    public Board()
+    void init()
     {
         for (int i = 0; i < 10; i++)
         {
@@ -149,6 +151,13 @@ class Board
                 value[i, j] = (int)CellState.Water;
             }
         }
+        // value[0, 0] = (int)CellState.Ship; //teorytycznie zmiana w X ale zmienia się w Y, pierwszy wymiar oznacza rząd a drugi oznacza kolumne
+        // value[1, 0] = (int)CellState.Ship;
+    }
+
+    public Board()
+    {
+       init(); 
     }
 
 
