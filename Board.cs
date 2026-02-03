@@ -1,74 +1,9 @@
 using System.Numerics;
-
-class Statki
+class Board
 {
-    int[,] Gen_board = new int[10, 10];
+    int[,] value = new int[10, 10];
 
-    public Statki()
-    {
-        for (int i = 0; i < 10; i++)
-        {
-            for (int j = 0; j < 10; j++)
-            {
-                Gen_board[i, j] = (int)CellState.Water;
-            }
-        }
-    }
-
-    public void Run()
-    {
-        //generateboards();
-        bool isExit = false;
-
-        while (!isExit)
-        {
-            displayBoard();
-            ConsoleKeyInfo key = Console.ReadKey();
-            Console.WriteLine();
-            if (key.KeyChar == 'e')
-                isExit = true;
-        }
-    }
-
-    void displayBoard()
-    {
-        Console.Clear();
-        for (int i = 0; i < 10; i++)
-        {
-            for (int j = 0; j < 10; j++)
-            {
-                Console.ResetColor();
-                Console.Write((char)Gen_board[i, j]);
-                switch (Gen_board[i, j])
-                {
-                    case (int)CellState.Hit:
-                        Console.BackgroundColor = ConsoleColor.Blue;
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.Write("|X|");
-                        break;
-                    case (int)CellState.Ship:
-                        Console.BackgroundColor = ConsoleColor.Blue;
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.Write("|S|");
-                        break;
-                    case (int)CellState.Miss:
-                        Console.BackgroundColor = ConsoleColor.Blue;
-                        Console.ForegroundColor = ConsoleColor.Black;
-                        Console.Write("|O|");
-                        break;
-                    default:
-                        Console.BackgroundColor = ConsoleColor.Blue;
-                        Console.ForegroundColor = ConsoleColor.DarkBlue;
-                        Console.Write("|~|");
-                        break;
-
-                }
-            }
-            Console.WriteLine();
-        }
-    }
-
-    void generateboards()
+    public void GenerateRandom()
     {
         int[] rand_row = new int[10] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
         int[] rand_col = new int[10] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
@@ -153,7 +88,7 @@ class Statki
 
         foreach (var index in correct_indexes)
         {
-            Gen_board[(int)index.X, (int)index.Y] = (int)CellState.Ship;
+            value[(int)index.X, (int)index.Y] = (int)CellState.Ship;
         }
         return true;
     }
@@ -162,18 +97,59 @@ class Statki
     {
         if (x >= 0 && x < 10 && y >= 0 && y < 10)
         {
-            return (char)Gen_board[x, y];
+            return (char)value[x, y];
         }
         return (int)CellState.OutOfBounds;
     }
-}
 
-enum CellState
-{
-    Water = 0,
-    Hit = 1,
-    Ship = 2,
-    Miss = 3,
-    OutOfBounds = 4
-}
+    public void Display()
+    {
+        Console.Clear();
+        for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 10; j++)
+            {
+                Console.ResetColor();
+                Console.Write((char)value[i, j]);
+                switch (value[i, j])
+                {
+                    case (int)CellState.Hit:
+                        Console.BackgroundColor = ConsoleColor.Blue;
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.Write("|X|");
+                        break;
+                    case (int)CellState.Ship:
+                        Console.BackgroundColor = ConsoleColor.Blue;
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write("|S|");
+                        break;
+                    case (int)CellState.Miss:
+                        Console.BackgroundColor = ConsoleColor.Blue;
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.Write("|O|");
+                        break;
+                    default:
+                        Console.BackgroundColor = ConsoleColor.Blue;
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        Console.Write("|~|");
+                        break;
 
+                }
+            }
+            Console.WriteLine();
+        }
+    }
+
+    public Board()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 10; j++)
+            {
+                value[i, j] = (int)CellState.Water;
+            }
+        }
+    }
+
+
+}
