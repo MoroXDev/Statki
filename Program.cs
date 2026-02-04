@@ -6,7 +6,7 @@
         bool isExit = false;
 
         Board gen_board = new Board();
-        // gen_board.GenerateRandom();
+        gen_board.GenerateRandom();
 
 
         while (!isExit)

@@ -8,12 +8,12 @@ class Board
         int[] rand_row = new int[10] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
         int[] rand_col = new int[10] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
         Random rand = new Random();
-  
+
         bool ships_inserted;
-        do       
+        do
         {
             ships_inserted = true;
-            init(); 
+            init();
             for (int ship_type = 1; ship_type < 5; ship_type++)
             {
                 for (int ships_i = 0; ships_i < ship_type; ships_i++)
@@ -35,11 +35,11 @@ class Board
 
     bool TryAddShipRandomized(ref int[] rand_row, ref int[] rand_col, int ship_type)
     {
-        for (int i = 0; i < 10; i++)
+        for (int y = 0; y < 10; y++)
         {
-            for (int j = 0; j < 10; j++)
+            for (int x = 0; x < 10; x++)
             {
-                if (TryAddShipAt(rand_row[i], rand_col[j], ship_type))
+                if (TryAddShipAt(rand_row[x], rand_col[y], ship_type))
                 {
                     return true;
                 }
@@ -78,9 +78,10 @@ class Board
         Vector2[] correct_indexes = new Vector2[cell_count];
         for (int i = 0; i < cell_count; i++)
         {
-            if (GetCellAt(x + (int)dir.X * cell_count, y + (int)dir.Y * cell_count) == (int)CellState.Water)
+            if (GetCellAt(x + (int)dir.X * i, y + (int)dir.Y * i) == (int)CellState.Water  &&
+                CheckCellsAround(x, y, CellState.Water))
             {
-                correct_indexes[i] = new Vector2(x + (int)dir.X * cell_count, y + (int)dir.Y * cell_count);
+                correct_indexes[i] = new Vector2(x + (int)dir.X * i, y + (int)dir.Y * i);
             }
             else
             {
@@ -90,7 +91,7 @@ class Board
 
         foreach (var index in correct_indexes)
         {
-            value[(int)index.X, (int)index.Y] = (int)CellState.Ship;
+            value[(int)index.Y, (int)index.X] = (int)CellState.Ship;
         }
         return true;
     }
@@ -99,9 +100,27 @@ class Board
     {
         if (x >= 0 && x < 10 && y >= 0 && y < 10)
         {
-            return (char)value[x, y];
+            return (char)value[y, x];
         }
         return (int)CellState.OutOfBounds;
+    }
+
+
+    bool CheckCellsAround(int x, int y, CellState c_state)
+    {
+        if (GetCellAt(x + 1, y) == (int)c_state &&
+            GetCellAt(x + 1, y + 1) == (int)c_state &&
+            GetCellAt(x, y + 1) == (int)c_state &&
+            GetCellAt(x - 1, y + 1) == (int)c_state &&
+            GetCellAt(x - 1, y) == (int)c_state &&
+            GetCellAt(x - 1, y - 1) == (int)c_state &&
+            GetCellAt(x, y - 1) == (int)c_state &&
+            GetCellAt(x + 1, y - 1) == (int)c_state)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     public void Display()
@@ -112,7 +131,6 @@ class Board
         {
             for (int j = 0; j < 10; j++)
             {
-                Console.Write((char)value[i, j]);
                 switch (value[i, j])
                 {
                     case (int)CellState.Hit:
@@ -157,7 +175,7 @@ class Board
 
     public Board()
     {
-       init(); 
+        init();
     }
 
 
