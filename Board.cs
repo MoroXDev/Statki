@@ -2,6 +2,16 @@ using System.Numerics;
 class Board
 {
     CellState[,] value = new CellState[10, 10];
+    Vector2[] index_around = new Vector2[] {
+    new Vector2(1, 0),
+    new Vector2(1, 1),
+    new Vector2(0, 1),
+    new Vector2(-1, 1),
+        new Vector2(-1, 0),
+        new Vector2(-1, -1),
+        new Vector2(0, -1),
+        new Vector2(1, -1),
+    };
 
     public void GenerateRandom()
     {
@@ -78,10 +88,11 @@ class Board
         Vector2[] correct_indexes = new Vector2[cell_count];
         for (int i = 0; i < cell_count; i++)
         {
-            if (GetCellAt(x + (int)dir.X * i, y + (int)dir.Y * i) == CellState.Water  &&
-                CheckCellsAround(x, y, CellState.Water))
+            Vector2 next_pos = new Vector2(x + (int)dir.X * i, y + (int)dir.Y * i);
+            if (GetCellAt((int)next_pos.X, (int)next_pos.Y) == CellState.Water &&
+                CheckCellsAround((int)next_pos.X, (int)next_pos.Y, CellState.Water))
             {
-                correct_indexes[i] = new Vector2(x + (int)dir.X * i, y + (int)dir.Y * i);
+                correct_indexes[i] = next_pos;
             }
             else
             {
@@ -105,16 +116,15 @@ class Board
         return CellState.OutOfBounds;
     }
 
-
     bool CheckCellsAround(int x, int y, CellState c_state)
     {
-        if (GetCellAt(x + 1, y) == c_state &&
-            GetCellAt(x + 1, y + 1) == c_state &&
-            GetCellAt(x, y + 1) == c_state &&
-            GetCellAt(x - 1, y + 1) == c_state &&
-            GetCellAt(x - 1, y) == c_state &&
-            GetCellAt(x - 1, y - 1) == c_state &&
-            GetCellAt(x, y - 1) == c_state &&
+        if (GetCellAt(x + 1, y) == c_state ||
+            GetCellAt(x + 1, y + 1) == c_state ||
+            GetCellAt(x, y + 1) == c_state ||
+            GetCellAt(x - 1, y + 1) == c_state ||
+            GetCellAt(x - 1, y) == c_state ||
+            GetCellAt(x - 1, y - 1) == c_state ||
+            GetCellAt(x, y - 1) == c_state ||
             GetCellAt(x + 1, y - 1) == c_state)
         {
             return true;
