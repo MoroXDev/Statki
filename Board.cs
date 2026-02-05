@@ -1,7 +1,7 @@
 using System.Numerics;
 class Board
 {
-    int[,] value = new int[10, 10];
+    CellState[,] value = new CellState[10, 10];
 
     public void GenerateRandom()
     {
@@ -50,7 +50,7 @@ class Board
 
     bool TryAddShipAt(int x, int y, int ship_type)
     {
-        if (GetCellAt(x, y) == (int)CellState.Water)
+        if (GetCellAt(x, y) == CellState.Water)
         {
             int cell_count = 5 - ship_type;
 
@@ -78,7 +78,7 @@ class Board
         Vector2[] correct_indexes = new Vector2[cell_count];
         for (int i = 0; i < cell_count; i++)
         {
-            if (GetCellAt(x + (int)dir.X * i, y + (int)dir.Y * i) == (int)CellState.Water  &&
+            if (GetCellAt(x + (int)dir.X * i, y + (int)dir.Y * i) == CellState.Water  &&
                 CheckCellsAround(x, y, CellState.Water))
             {
                 correct_indexes[i] = new Vector2(x + (int)dir.X * i, y + (int)dir.Y * i);
@@ -91,31 +91,31 @@ class Board
 
         foreach (var index in correct_indexes)
         {
-            value[(int)index.Y, (int)index.X] = (int)CellState.Ship;
+            value[(int)index.Y, (int)index.X] = CellState.Ship;
         }
         return true;
     }
 
-    int GetCellAt(int x, int y)
+    CellState GetCellAt(int x, int y)
     {
         if (x >= 0 && x < 10 && y >= 0 && y < 10)
         {
-            return (char)value[y, x];
+            return value[y, x];
         }
-        return (int)CellState.OutOfBounds;
+        return CellState.OutOfBounds;
     }
 
 
     bool CheckCellsAround(int x, int y, CellState c_state)
     {
-        if (GetCellAt(x + 1, y) == (int)c_state &&
-            GetCellAt(x + 1, y + 1) == (int)c_state &&
-            GetCellAt(x, y + 1) == (int)c_state &&
-            GetCellAt(x - 1, y + 1) == (int)c_state &&
-            GetCellAt(x - 1, y) == (int)c_state &&
-            GetCellAt(x - 1, y - 1) == (int)c_state &&
-            GetCellAt(x, y - 1) == (int)c_state &&
-            GetCellAt(x + 1, y - 1) == (int)c_state)
+        if (GetCellAt(x + 1, y) == c_state &&
+            GetCellAt(x + 1, y + 1) == c_state &&
+            GetCellAt(x, y + 1) == c_state &&
+            GetCellAt(x - 1, y + 1) == c_state &&
+            GetCellAt(x - 1, y) == c_state &&
+            GetCellAt(x - 1, y - 1) == c_state &&
+            GetCellAt(x, y - 1) == c_state &&
+            GetCellAt(x + 1, y - 1) == c_state)
         {
             return true;
         }
@@ -133,17 +133,17 @@ class Board
             {
                 switch (value[i, j])
                 {
-                    case (int)CellState.Hit:
+                    case CellState.Hit:
                         Console.BackgroundColor = ConsoleColor.Blue;
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.Write("|X|");
                         break;
-                    case (int)CellState.Ship:
+                    case CellState.Ship:
                         Console.BackgroundColor = ConsoleColor.Blue;
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.Write("|S|");
                         break;
-                    case (int)CellState.Miss:
+                    case CellState.Miss:
                         Console.BackgroundColor = ConsoleColor.Blue;
                         Console.ForegroundColor = ConsoleColor.Black;
                         Console.Write("|O|");
@@ -166,7 +166,7 @@ class Board
         {
             for (int j = 0; j < 10; j++)
             {
-                value[i, j] = (int)CellState.Water;
+                value[i, j] = CellState.Water;
             }
         }
         // value[0, 0] = (int)CellState.Ship; //teorytycznie zmiana w X ale zmienia się w Y, pierwszy wymiar oznacza rząd a drugi oznacza kolumne
