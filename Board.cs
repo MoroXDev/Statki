@@ -143,11 +143,6 @@ class Board
             {
                 switch (value[i, j])
                 {
-                    case CellState.Hit:
-                        Console.BackgroundColor = ConsoleColor.Blue;
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.Write("|X|");
-                        break;
                     case CellState.Ship:
                         Console.BackgroundColor = ConsoleColor.Blue;
                         Console.ForegroundColor = ConsoleColor.Yellow;
@@ -155,15 +150,14 @@ class Board
                         break;
                     case CellState.Miss:
                         Console.BackgroundColor = ConsoleColor.Blue;
-                        Console.ForegroundColor = ConsoleColor.Black;
-                        Console.Write("|O|");
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.Write("|X|");
                         break;
                     default:
                         Console.BackgroundColor = ConsoleColor.Blue;
-                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        Console.ForegroundColor = ConsoleColor.Black;
                         Console.Write("|~|");
                         break;
-
                 }
             }
             Console.WriteLine();
@@ -187,6 +181,4 @@ class Board
     {
         init();
     }
-
-
 }

@@ -8,7 +8,6 @@
         Board gen_board = new Board();
         gen_board.GenerateRandom();
 
-
         while (!isExit)
         {
             gen_board.Display();
@@ -18,18 +17,13 @@
             if (key.KeyChar == 'e')
                 isExit = true;
         }
-
     }
-
-   
 }
 
 enum CellState
 {
-    Water = 0,
-    Hit = 1,
-    Ship = 2,
-    Miss = 3,
-    OutOfBounds = 4
+    Water,
+    Ship,
+    Miss,
+    OutOfBounds
 }
-
