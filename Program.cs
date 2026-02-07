@@ -36,16 +36,16 @@ class Program
             Console.WriteLine("Podaj współrzędne początku statku (x y):");
             while (!int.TryParse(Console.ReadLine(), out Start_X) || !int.TryParse(Console.ReadLine(), out Start_Y))
             {
-                Console.WriteLine("Podałeś współrzędne poza planszą lub nie wpisałeś liczby całkowitej, podaj prawidłowe współrzędne: ");
+                Console.WriteLine("Nie wpisałeś liczby całkowitej, podaj prawidłowe współrzędne: ");
             }
 
             Console.WriteLine("Podaj współrzędne końca statku (x y):");
             while (!int.TryParse(Console.ReadLine(), out End_X) || !int.TryParse(Console.ReadLine(), out End_Y))
             {
-                Console.WriteLine("Podałeś współrzędne poza planszą lub nie wpisałeś liczby całkowitej, podaj prawidłowe współrzędne: ");
+                Console.WriteLine("Nie wpisałeś liczby całkowitej, podaj prawidłowe współrzędne: ");
             }
 
-            
+
 
             if (Board.TryGetShipLength(Start_X, Start_Y, End_X, End_Y, out int size))
             {
@@ -61,29 +61,35 @@ class Program
                         else
                         {
                             Console.WriteLine("Statek koliduje z statkami lub wychodzi poza plansze!");
-
+                            Console.WriteLine("Kliknij cokolwiek, aby kontynuować");
+                            Console.ReadKey();
                         }
                     }
                     else
                     {
                         Console.WriteLine("Nie ma już dostępnej wielkości statku: " + size + " Wstaw statek innej wielkości.");
+                        Console.WriteLine("Kliknij cokolwiek, aby kontynuować");
+                        Console.ReadKey();
                     }
                 }
                 else
                 {
                     Console.WriteLine("Wstawiałeś złą wielkość statku, wybierz poprawną wielkość statku.");
+                    Console.WriteLine("Kliknij cokolwiek, aby kontynuować");
+                    Console.ReadKey();
                 }
 
             }
             else
             {
                 Console.WriteLine("Statek jest za wielki, jego szerokość i wysokość są naraz większe od 1 pola, spróbuj ponownie.");
+                Console.WriteLine("Kliknij cokolwiek, aby kontynuować");
+                Console.ReadKey();
             }
-            Console.WriteLine("Kliknij co kolwiek aby kontynuować");
-            Console.ReadKey();
+
             Console.Clear();
         }
-        
+
         while (!isExit)
         {
             gen_board.Display();
