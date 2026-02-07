@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
@@ -113,8 +114,8 @@ class Board
         if (!TryGetShipLength(start_x, start_y, end_x, end_y, out int cell_count))
             return false;
 
-        Vector2 dir = GetShipDir(start_x, start_y, end_x, end_y);
-        if (TryAddShipCells(Math.Min(start_x, end_x), Math.Min(start_y, end_y), cell_count,  dir))
+        Vector2 dir = GetShipDir(start_x, start_y, end_x, end_y); //zle obliczanie kierunku
+        if (TryAddShipCells(Math.Min(start_x, end_x), Math.Min(start_y, end_y), cell_count, dir))
             return true;
 
         return false;
@@ -129,13 +130,12 @@ class Board
         int height = Math.Abs(end_y - start_y) + 1;
         int width = Math.Abs(end_x - start_x) + 1;
 
+        size = Math.Max(width, height);
         if (width != 1 && height != 1)
         {
-            size = width + height;
             return false;
         }
 
-        size = width + height;
         return true;
     }
 
@@ -145,7 +145,7 @@ class Board
     /// <returns>Kierunek Dół (0, 1), Prawo (1, 0)</returns>
     public static Vector2 GetShipDir(int start_x, int start_y, int end_x, int end_y)
     {
-        return new Vector2(Math.Max(start_x, end_x) - Math.Min(start_x, end_x), Math.Max(start_y, end_y) - Math.Min(start_y, end_y));
+        return Vector2.Normalize(new Vector2(Math.Max(start_x, end_x) - Math.Min(start_x, end_x), Math.Max(start_y, end_y) - Math.Min(start_y, end_y)));
     }
 
     CellState GetCellAt(int x, int y)
@@ -183,12 +183,18 @@ class Board
     public void Display()
     {
         Console.ResetColor();
-        Console.Clear();
         for (int i = 0; i < 10; i++)
         {
-            for (int j = 0; j < 10; j++)
+            Console.Write($"|{(char)(i + 'A')}|");
+        }
+        Console.WriteLine();
+
+        for (int y = 0; y < 10; y++)
+        {
+            for (int x = 0; x < 10; x++)
             {
-                switch (value[i, j])
+                
+                switch (value[y, x])
                 {
                     case CellState.Ship:
                         Console.BackgroundColor = ConsoleColor.Blue;
@@ -216,7 +222,7 @@ class Board
             Console.WriteLine();
         }
         Console.BackgroundColor = ConsoleColor.Black;
-        Console.ForegroundColor = ConsoleColor.DarkMagenta;
+        Console.ForegroundColor = ConsoleColor.White;
     }
 
     public void DisplayHidden()

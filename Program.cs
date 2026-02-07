@@ -9,7 +9,6 @@
         gen_board.GenerateRandom();
 
         Board player_board = new Board();
-        player_board.Display();
 
         int Start_X = 0, Start_Y = 0, End_X = 0, End_Y = 0;
         int Ship_Count = 0;
@@ -20,16 +19,18 @@
             { 4, 1 },
             { 3, 2 },
             { 2, 3 },
-            { 1, 4 }    
+            { 1, 4 }
         };
 
 
         Console.WriteLine("Witaj użytkowniku!");
         Console.WriteLine("Podaj współrzędne aby rozstawić statki.");
 
-        
+
         while (Ship_Count < 10)
         {
+            player_board.Display();
+
             Console.WriteLine("Podaj współrzędne początku statku (x y):");
             while (!int.TryParse(Console.ReadLine(), out Start_X) || !int.TryParse(Console.ReadLine(), out Start_Y))
             {
@@ -44,16 +45,31 @@
 
             if (Board.TryGetShipLength(Start_X, Start_Y, End_X, End_Y, out int size))
             {
-                if (Size_AvailableCount[size] > 0)
+                if (Size_AvailableCount.TryGetValue(size, out int count))
                 {
-                    Size_AvailableCount[size]--;
-                    player_board.TryAddShipFromTo(Start_X, Start_Y, End_X, End_Y);
-                    Ship_Count++;
+                    if (count > 0)
+                    {
+                        if (player_board.TryAddShipFromTo(Start_X, Start_Y, End_X, End_Y))
+                        {
+                            Size_AvailableCount[size]--;
+                            Ship_Count++;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Statek koliduje z statkami lub wychodzi poza plansze!");
+
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Nie ma już dostępnej wielkości statku: " + size + " Wstaw statek innej wielkości.");
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("Nie ma już dostępnej wielkości statku:" + size + " Wstaw statek innej wielkości.");
+                    Console.WriteLine("podano złą wielkość statku!");
                 }
+
             }
             else
             {
