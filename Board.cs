@@ -181,10 +181,12 @@ class Board
 
         return false;
     }
-
+    int n = 0;
     public void Display()
     {
+        Console.Write("   ");
         Console.ResetColor();
+
         for (int i = 0; i < 10; i++)
         {
             Console.Write($"|{(char)(i + 'A')}|");
@@ -193,6 +195,9 @@ class Board
 
         for (int y = 0; y < 10; y++)
         {
+
+                Console.Write($"|{y}|");
+
             for (int x = 0; x < 10; x++)
             {
                 
