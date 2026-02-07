@@ -1,6 +1,4 @@
-using System.Linq.Expressions;
 using System.Numerics;
-using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 class Board
 {
@@ -52,7 +50,7 @@ class Board
         {
             for (int x = 0; x < 10; x++)
             {
-                if (TryAddShipAt(rand_row[x], rand_col[y], ship_type, ref rand))
+                if (TryAddShipWithRandDir(rand_row[x], rand_col[y], ship_type, ref rand))
                 {
                     return true;
                 }
@@ -61,7 +59,7 @@ class Board
         return false;
     }
 
-    bool TryAddShipAt(int x, int y, int ship_type, ref Random dir_rand)
+    public bool TryAddShipWithRandDir(int x, int y, int ship_type, ref Random dir_rand)
     {
         if (GetCellAt(x, y) == CellState.Water)
         {
@@ -88,7 +86,7 @@ class Board
         return false;
     }
 
-    bool TryAddShipCells(int x, int y, int cell_count, Vector2 dir)
+    public bool TryAddShipCells(int x, int y, int cell_count, Vector2 dir)
     {
         Vector2[] correct_indexes = new Vector2[cell_count];
 
@@ -106,6 +104,30 @@ class Board
         {
             value[(int)index.Y, (int)index.X] = CellState.Ship;
         }
+        return true;
+    }
+
+    bool TryAddShipFromTo(int start_x, int start_y, int end_x, int end_y)
+    {
+        if (GetCellAt(start_x, start_y) == CellState.Water)
+        {
+
+        }
+        return false;
+    }
+
+    public static bool TryGetShipLength(int start_x, int start_y, int end_x, int end_y, out int size)
+    {
+        int height = Math.Abs(end_y - start_y) + 1;
+        int width = Math.Abs(end_x - start_x) + 1;
+        
+        if (width != 1 && height != 1)
+        {
+            size = width + height;
+            return false; 
+        }
+
+        size = width + height;
         return true;
     }
 
@@ -158,6 +180,11 @@ class Board
                         break;
                     case CellState.Miss:
                         Console.BackgroundColor = ConsoleColor.Blue;
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.Write("|O|");
+                        break;
+                    case CellState.Hit:
+                        Console.BackgroundColor = ConsoleColor.Blue;
                         Console.ForegroundColor = ConsoleColor.DarkRed;
                         Console.Write("|X|");
                         break;
@@ -172,6 +199,37 @@ class Board
         }
     }
 
+    public void DisplayHidden()
+    {
+        Console.ResetColor();
+        Console.Clear();
+        for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 10; j++)
+            {
+                switch (value[i, j])
+                {
+                    case CellState.Miss:
+                        Console.BackgroundColor = ConsoleColor.Blue;
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.Write("|O|");
+                        break;
+                    case CellState.Hit:
+                        Console.BackgroundColor = ConsoleColor.Blue;
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.Write("|X|");
+                        break;
+                    default:
+                        Console.BackgroundColor = ConsoleColor.Blue;
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.Write("|~|");
+                        break;
+                }
+            }
+            Console.WriteLine();
+        }     
+    }
+
     void restart()
     {
         for (int i = 0; i < 10; i++)
@@ -181,6 +239,16 @@ class Board
                 value[i, j] = CellState.Water;
             }
         }
+    }
+
+    bool Kill(int x, int y)
+    {
+        if (GetCellAt(x, y) == CellState.Ship)
+        {
+            value[y, x] = CellState.Hit;
+            return true; 
+        }
+        return false;
     }
 
     public Board()

@@ -25,5 +25,7 @@ enum CellState
     Water,
     Ship,
     Miss,
-    OutOfBounds
+    Hit,
+    OutOfBounds,
+    
 }
