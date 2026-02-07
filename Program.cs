@@ -15,6 +15,7 @@
 
         Dictionary<int, int> SizeCountPair = new Dictionary<int, int>();
 
+
         Console.WriteLine("Witaj użytkowniku!");
         Console.WriteLine("Podaj współrzędne aby rozstawić statki.");
 
@@ -45,6 +46,7 @@
             {
                 Console.WriteLine("Statek nie może być na ukos!");
             }
+
         }
         Console.Clear();
 
