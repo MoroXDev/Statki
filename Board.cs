@@ -210,10 +210,13 @@ class Board
                         Console.ForegroundColor = ConsoleColor.Black;
                         Console.Write("|~|");
                         break;
+                    
                 }
             }
             Console.WriteLine();
         }
+        Console.BackgroundColor = ConsoleColor.Black;
+        Console.ForegroundColor = ConsoleColor.DarkMagenta;
     }
 
     public void DisplayHidden()

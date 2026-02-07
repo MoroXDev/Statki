@@ -9,17 +9,25 @@
         gen_board.GenerateRandom();
 
         Board player_board = new Board();
+        player_board.Display();
 
         int Start_X = 0, Start_Y = 0, End_X = 0, End_Y = 0;
         int Ship_Count = 0;
 
-        Dictionary<int, int> SizeCountPair = new Dictionary<int, int>();
+
+        Dictionary<int, int> Size_AvailableCount = new Dictionary<int, int>()
+        {
+            { 4, 1 },
+            { 3, 2 },
+            { 2, 3 },
+            { 1, 4 }    
+        };
 
 
         Console.WriteLine("Witaj użytkowniku!");
         Console.WriteLine("Podaj współrzędne aby rozstawić statki.");
 
-        //Wybór statków gracza
+        
         while (Ship_Count < 10)
         {
             Console.WriteLine("Podaj współrzędne początku statku (x y):");
@@ -33,21 +41,29 @@
             {
                 Console.WriteLine("Podałeś współrzędne poza planszą lub nie wpisałeś liczby całkowitej, podaj prawidłowe współrzędne");
             }
-            //do dokończenia funkcji try get ship_lenght
-            if (SizeCountPair[])
+
+            if (Board.TryGetShipLength(Start_X, Start_Y, End_X, End_Y, out int size))
             {
 
-            }
-            if (player_board.TryAddShipFromTo(Start_X, Start_Y, End_X, End_Y))
-            {
-                Ship_Count++;    
+                if (Size_AvailableCount[size] > 0)
+                {
+                    Size_AvailableCount[size]--;
+                    if (player_board.TryAddShipFromTo(Start_X, Start_Y, End_X, End_Y))
+                    {
+                        Ship_Count++;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Nie ma już dostępnej wielkości statku:" + size);
+                }
             }
             else
             {
-                Console.WriteLine("Statek nie może być na ukos!");
+                Console.WriteLine("Podałeś błędne współrzędne statku, podaj poprawnne współrzędne.");
             }
-
         }
+
         Console.Clear();
 
         while (!isExit)
@@ -59,6 +75,8 @@
             if (key.KeyChar == 'e')
                 isExit = true;
         }
+
+
     }
 }
 
@@ -69,5 +87,5 @@ enum CellState
     Miss,
     Hit,
     OutOfBounds,
-    
+
 }
