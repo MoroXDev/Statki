@@ -196,11 +196,11 @@ class Board
 
         for (int y = 0; y < 10; y++)
         {
+            Console.ResetColor(); 
             Console.Write($"|{y}|");
 
             for (int x = 0; x < 10; x++)
             {
-
                 switch (value[y, x])
                 {
                     case CellState.Ship:
@@ -223,13 +223,11 @@ class Board
                         Console.ForegroundColor = ConsoleColor.Black;
                         Console.Write("|~|");
                         break;
-
                 }
             }
             Console.WriteLine();
         }
-        Console.BackgroundColor = ConsoleColor.Black;
-        Console.ForegroundColor = ConsoleColor.White;
+        Console.ResetColor();
     }
 
     public void DisplayHidden()
