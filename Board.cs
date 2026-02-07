@@ -148,7 +148,7 @@ class Board
     {
         Vector2 dist = new(Math.Max(start_x, end_x) - Math.Min(start_x, end_x), Math.Max(start_y, end_y) - Math.Min(start_y, end_y));
         //do naprawy
-        return Vector2.Clamp(dist, new(0, 0), new(1, 1)); 
+        return Vector2.Clamp(dist, new(0, 0), new(1, 1));
     }
 
     CellState GetCellAt(int x, int y)
@@ -182,11 +182,12 @@ class Board
 
         return false;
     }
-
+    int n = 0;
     public void Display()
     {
-        Console.ResetColor();
         Console.Write("   ");
+        Console.ResetColor();
+
         for (int i = 0; i < 10; i++)
         {
             Console.Write($"|{(char)(i + 'A')}|");
@@ -195,10 +196,11 @@ class Board
 
         for (int y = 0; y < 10; y++)
         {
-            Console.Write($"|{y + 1}|");
+            Console.Write($"|{y}|");
+
             for (int x = 0; x < 10; x++)
             {
-                
+
                 switch (value[y, x])
                 {
                     case CellState.Ship:
@@ -221,7 +223,7 @@ class Board
                         Console.ForegroundColor = ConsoleColor.Black;
                         Console.Write("|~|");
                         break;
-                    
+
                 }
             }
             Console.WriteLine();
