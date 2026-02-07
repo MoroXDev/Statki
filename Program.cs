@@ -9,7 +9,6 @@
         gen_board.GenerateRandom();
 
         Board player_board = new Board();
-        player_board.Display();
 
         int Start_X = 0, Start_Y = 0, End_X = 0, End_Y = 0;
         int Ship_Count = 0;
@@ -30,6 +29,7 @@
         
         while (Ship_Count < 10)
         {
+            player_board.Display();
             Console.WriteLine("Podaj współrzędne początku statku (x y):");
             while (!int.TryParse(Console.ReadLine(), out Start_X) || !int.TryParse(Console.ReadLine(), out Start_Y))
             {
@@ -42,27 +42,42 @@
                 Console.WriteLine("Podałeś współrzędne poza planszą lub nie wpisałeś liczby całkowitej, podaj prawidłowe współrzędne: ");
             }
 
+            
+
             if (Board.TryGetShipLength(Start_X, Start_Y, End_X, End_Y, out int size))
             {
-                if (Size_AvailableCount[size] > 0)
+                if (Size_AvailableCount.TryGetValue(size, out int Count))
                 {
-                    Size_AvailableCount[size]--;
-                    player_board.TryAddShipFromTo(Start_X, Start_Y, End_X, End_Y);
-                    Ship_Count++;
+                    if (Count > 0)
+                    {
+                        
+                        Size_AvailableCount[size]--;
+                        if(!player_board.TryAddShipFromTo(Start_X, Start_Y, End_X, End_Y))
+                        {
+                            Console.WriteLine("Coś poszło nie tak");
+                        }
+
+                            Ship_Count++;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Nie ma już dostępnej wielkości statku:" + size + " Wstaw statek innej wielkości.");
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("Nie ma już dostępnej wielkości statku:" + size + " Wstaw statek innej wielkości.");
+                    Console.WriteLine("Wstawiałeś złą wielkość statku, wybierz poprawną wielkość statku.");
                 }
             }
             else
             {
                 Console.WriteLine("Statek jest za wielki, jego szerokość i wysokość są naraz większe od 1 pola, spróbuj ponownie.");
             }
+            Console.WriteLine("Kliknij co kolwiek aby kontynuować");
+            Console.ReadKey();
+            Console.Clear();
         }
-
-        Console.Clear();
-
+        
         while (!isExit)
         {
             gen_board.Display();
@@ -84,5 +99,4 @@ enum CellState
     Miss,
     Hit,
     OutOfBounds,
-
 }

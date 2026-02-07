@@ -114,7 +114,7 @@ class Board
             return false;
 
         Vector2 dir = GetShipDir(start_x, start_y, end_x, end_y);
-        if (TryAddShipCells(Math.Min(start_x, end_x), Math.Min(start_y, end_y), cell_count,  dir))
+        if (TryAddShipCells(Math.Min(start_x, end_x), Math.Max(start_y, end_y), cell_count,  dir))
             return true;
 
         return false;
@@ -129,13 +129,12 @@ class Board
         int height = Math.Abs(end_y - start_y) + 1;
         int width = Math.Abs(end_x - start_x) + 1;
 
+        size = Math.Max(width, height);
+
         if (width != 1 && height != 1)
         {
-            size = width + height;
             return false;
         }
-
-        size = width + height;
         return true;
     }
 
@@ -183,7 +182,6 @@ class Board
     public void Display()
     {
         Console.ResetColor();
-        Console.Clear();
         for (int i = 0; i < 10; i++)
         {
             for (int j = 0; j < 10; j++)
@@ -216,7 +214,7 @@ class Board
             Console.WriteLine();
         }
         Console.BackgroundColor = ConsoleColor.Black;
-        Console.ForegroundColor = ConsoleColor.DarkMagenta;
+        Console.ForegroundColor = ConsoleColor.White;
     }
 
     public void DisplayHidden()
