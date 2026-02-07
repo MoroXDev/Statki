@@ -182,7 +182,7 @@ class Board
 
         return false;
     }
-    int n = 0;
+    
     public void Display()
     {
         Console.Write("   ");
