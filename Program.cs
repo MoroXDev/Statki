@@ -33,34 +33,31 @@
             Console.WriteLine("Podaj współrzędne początku statku (x y):");
             while (!int.TryParse(Console.ReadLine(), out Start_X) || !int.TryParse(Console.ReadLine(), out Start_Y))
             {
-                Console.WriteLine("Podałeś współrzędne poza planszą lub nie wpisałeś liczby całkowitej, podaj prawidłowe współrzędne");
+                Console.WriteLine("Podałeś współrzędne poza planszą lub nie wpisałeś liczby całkowitej, podaj prawidłowe współrzędne: ");
             }
 
             Console.WriteLine("Podaj współrzędne końca statku (x y):");
             while (int.TryParse(Console.ReadLine(), out End_X) && int.TryParse(Console.ReadLine(), out End_Y))
             {
-                Console.WriteLine("Podałeś współrzędne poza planszą lub nie wpisałeś liczby całkowitej, podaj prawidłowe współrzędne");
+                Console.WriteLine("Podałeś współrzędne poza planszą lub nie wpisałeś liczby całkowitej, podaj prawidłowe współrzędne: ");
             }
 
             if (Board.TryGetShipLength(Start_X, Start_Y, End_X, End_Y, out int size))
             {
-
                 if (Size_AvailableCount[size] > 0)
                 {
                     Size_AvailableCount[size]--;
-                    if (player_board.TryAddShipFromTo(Start_X, Start_Y, End_X, End_Y))
-                    {
-                        Ship_Count++;
-                    }
+                    player_board.TryAddShipFromTo(Start_X, Start_Y, End_X, End_Y);
+                    Ship_Count++;
                 }
                 else
                 {
-                    Console.WriteLine("Nie ma już dostępnej wielkości statku:" + size);
+                    Console.WriteLine("Nie ma już dostępnej wielkości statku:" + size + " Wstaw statek innej wielkości.");
                 }
             }
             else
             {
-                Console.WriteLine("Podałeś błędne współrzędne statku, podaj poprawnne współrzędne.");
+                Console.WriteLine("Statek jest za wielki, jego szerokość i wysokość są naraz większe od 1 pola, spróbuj ponownie.");
             }
         }
 
