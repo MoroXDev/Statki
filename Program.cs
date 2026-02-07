@@ -5,7 +5,6 @@ class Program
     public static void Main()
     {
         Console.Title = "Statki";
-        Console.WriteLine("start");
         bool isExit = false;
 
         Board gen_board = new Board();
@@ -90,15 +89,28 @@ class Program
 
             Console.Clear();
         }
+            int x = 0;
+            int y = 0;
 
         while (!isExit)
         {
-            gen_board.Display();
+            Console.Clear();
+            // gen_board.Display();
+            player_board.Display();
+            Console.WriteLine($"{x} {y}");
 
             ConsoleKeyInfo key = Console.ReadKey();
             Console.WriteLine();
             if (key.KeyChar == 'e')
                 isExit = true;
+            // else if (key.Key == ConsoleKey.UpArrow)
+            // y--;
+            // else if (key.Key == ConsoleKey.DownArrow)
+            // y++;
+            // else if (key.Key == ConsoleKey.LeftArrow)
+            // x--;
+            // else if (key.Key == ConsoleKey.RightArrow)
+            // x++;
         }
     }
 }
