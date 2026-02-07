@@ -37,7 +37,7 @@
             }
 
             Console.WriteLine("Podaj współrzędne końca statku (x y):");
-            while (int.TryParse(Console.ReadLine(), out End_X) && int.TryParse(Console.ReadLine(), out End_Y))
+            while (!int.TryParse(Console.ReadLine(), out End_X) || !int.TryParse(Console.ReadLine(), out End_Y))
             {
                 Console.WriteLine("Podałeś współrzędne poza planszą lub nie wpisałeś liczby całkowitej, podaj prawidłowe współrzędne: ");
             }
