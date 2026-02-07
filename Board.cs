@@ -1,3 +1,4 @@
+using System.Drawing;
 using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
 class Board
@@ -107,28 +108,44 @@ class Board
         return true;
     }
 
-    bool TryAddShipFromTo(int start_x, int start_y, int end_x, int end_y)
+    public bool TryAddShipFromTo(int start_x, int start_y, int end_x, int end_y)
     {
-        if (GetCellAt(start_x, start_y) == CellState.Water)
-        {
+        if (!TryGetShipLength(start_x, start_y, end_x, end_y, out int cell_count))
+            return false;
 
-        }
+        Vector2 dir = GetShipDir(start_x, start_y, end_x, end_y);
+        if (TryAddShipCells(Math.Min(start_x, end_x), Math.Min(start_y, end_y), cell_count,  dir))
+            return true;
+
         return false;
     }
 
+    /// <summary>
+    /// zwraca bool i out int size przedstawiający ilość komórek wertykalnie i horyzontalnie
+    /// </summary>
+    /// <returns>Zwraca true jeżeli szerokość i wysokość nie są naraz większe od 1 lub false, gdy są np. dla statku 2x2</returns>
     public static bool TryGetShipLength(int start_x, int start_y, int end_x, int end_y, out int size)
     {
         int height = Math.Abs(end_y - start_y) + 1;
         int width = Math.Abs(end_x - start_x) + 1;
-        
+
         if (width != 1 && height != 1)
         {
             size = width + height;
-            return false; 
+            return false;
         }
 
         size = width + height;
         return true;
+    }
+
+    /// <summary>
+    /// Zwraca kierunek od rogu najbliższego (0, 0) do rogu najbliższego (9, 9), zakładając, że szerokość i wysokość nie są naraz większe od 1 np. statek 2x2
+    /// </summary>
+    /// <returns>Kierunek Dół (0, 1), Prawo (1, 0)</returns>
+    public static Vector2 GetShipDir(int start_x, int start_y, int end_x, int end_y)
+    {
+        return new Vector2(Math.Max(start_x, end_x) - Math.Min(start_x, end_x), Math.Max(start_y, end_y) - Math.Min(start_y, end_y));
     }
 
     CellState GetCellAt(int x, int y)
@@ -227,7 +244,7 @@ class Board
                 }
             }
             Console.WriteLine();
-        }     
+        }
     }
 
     void restart()
@@ -246,7 +263,7 @@ class Board
         if (GetCellAt(x, y) == CellState.Ship)
         {
             value[y, x] = CellState.Hit;
-            return true; 
+            return true;
         }
         return false;
     }
