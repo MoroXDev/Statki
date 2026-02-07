@@ -186,6 +186,7 @@ class Board
     public void Display()
     {
         Console.ResetColor();
+        Console.Write("   ");
         for (int i = 0; i < 10; i++)
         {
             Console.Write($"|{(char)(i + 'A')}|");
@@ -194,6 +195,7 @@ class Board
 
         for (int y = 0; y < 10; y++)
         {
+            Console.Write($"|{y + 1}|");
             for (int x = 0; x < 10; x++)
             {
                 

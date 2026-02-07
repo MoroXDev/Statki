@@ -4,6 +4,7 @@ class Program
 {
     public static void Main()
     {
+        Console.Title = "Statki";
         Console.WriteLine("start");
         bool isExit = false;
 
