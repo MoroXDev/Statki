@@ -1,4 +1,6 @@
-﻿class Program
+﻿using System.Numerics;
+
+class Program
 {
     public static void Main()
     {
@@ -43,6 +45,8 @@
                 Console.WriteLine("Podałeś współrzędne poza planszą lub nie wpisałeś liczby całkowitej, podaj prawidłowe współrzędne: ");
             }
 
+            
+
             if (Board.TryGetShipLength(Start_X, Start_Y, End_X, End_Y, out int size))
             {
                 if (Size_AvailableCount.TryGetValue(size, out int count))
@@ -67,7 +71,7 @@
                 }
                 else
                 {
-                    Console.WriteLine("podano złą wielkość statku!");
+                    Console.WriteLine("Wstawiałeś złą wielkość statku, wybierz poprawną wielkość statku.");
                 }
 
             }
@@ -75,10 +79,11 @@
             {
                 Console.WriteLine("Statek jest za wielki, jego szerokość i wysokość są naraz większe od 1 pola, spróbuj ponownie.");
             }
+            Console.WriteLine("Kliknij co kolwiek aby kontynuować");
+            Console.ReadKey();
+            Console.Clear();
         }
-
-        Console.Clear();
-
+        
         while (!isExit)
         {
             gen_board.Display();
@@ -88,8 +93,6 @@
             if (key.KeyChar == 'e')
                 isExit = true;
         }
-
-
     }
 }
 
@@ -100,5 +103,4 @@ enum CellState
     Miss,
     Hit,
     OutOfBounds,
-
 }

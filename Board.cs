@@ -131,6 +131,7 @@ class Board
         int width = Math.Abs(end_x - start_x) + 1;
 
         size = Math.Max(width, height);
+
         if (width != 1 && height != 1)
         {
             return false;
@@ -145,7 +146,8 @@ class Board
     /// <returns>Kierunek Dół (0, 1), Prawo (1, 0)</returns>
     public static Vector2 GetShipDir(int start_x, int start_y, int end_x, int end_y)
     {
-        return Vector2.Normalize(new Vector2(Math.Max(start_x, end_x) - Math.Min(start_x, end_x), Math.Max(start_y, end_y) - Math.Min(start_y, end_y)));
+        //do naprawy
+        return new Vector2(Math.Max(start_x, end_x) - Math.Min(start_x, end_x), Math.Max(start_y, end_y) - Math.Min(start_y, end_y));
     }
 
     CellState GetCellAt(int x, int y)
