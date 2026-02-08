@@ -368,7 +368,7 @@ class Board
                 {
                     case CellState.Miss:
                         Console.BackgroundColor = ConsoleColor.Blue;
-                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.ForegroundColor = ConsoleColor.Black;
                         Console.Write("|O|");
                         break;
                     case CellState.Hit:
@@ -384,8 +384,8 @@ class Board
                 }
             }
             Console.WriteLine();
+            Console.ResetColor();
         }
-        Console.ResetColor();
     }
 
     void restart()
