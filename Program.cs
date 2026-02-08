@@ -5,8 +5,9 @@ class Program
 {
     public static void Main()
     {
+        GAME_START:
+
         Console.Title = "Statki";
-        bool isExit = false;
 
         Board gen_board = new Board();
         gen_board.GenerateRandom();
@@ -21,56 +22,67 @@ class Program
         int Missed_Player_Shots = 0;
         int Round_Count = 0;
 
-        while (!isExit)
+        while (true)
         {
+            Round_Count++;
             Console.Clear();
-            Console.WriteLine("-----------------\r\nTura Przeciwnika\r\n-----------------");
+            Console.WriteLine("-----------------\r\nPrzeciwnik Strzela\r\n-----------------");
             player_board.Display();
             Thread.Sleep(3000);
-            if (player_board.Destroy_Random_Cell())
+            while (player_board.Destroy_Random_Ship())
             {
                 Destroyed_Player_Ships++;
             }//Przyszłościowo dodać zliczanie nietrafionych celów 2 gracza.
-                Console.Clear();
+            Console.Clear();
+
+            Console.WriteLine("-----------------\r\nPrzeciwnik Strzela\r\n-----------------");
             player_board.Display();
             Thread.Sleep(3000);
-            Console.Clear();
             if (Destroyed_Player_Ships == 10)
             {
-                Console.WriteLine("Niestety przegrałeś, Spróbój ponownie.");
-                Console.WriteLine("Liczba trafień:"+ Destroyed_Enemy_Ships);
-                Console.WriteLine("Liczba niecelnych strzałów" + Missed_Player_Shots);
-                Console.WriteLine("Liczba rozegranych tur:" + Round_Count);
+                Console.WriteLine("Niestety przegrałeś, Spróbuj ponownie.");
+                break;
             }
 
-
-            Console.WriteLine("-----------------\r\nTwoja Tura\r\n-----------------");
+            Console.Clear();
+            Console.WriteLine("-----------------\r\nTy Strzelasz\r\n-----------------");
             gen_board.DisplayHidden();
-            if (gen_board.Manual_Destroy_Cell())
+            bool gen_board_hit;
+            do
             {
-                Destroyed_Enemy_Ships++;
+                gen_board_hit = gen_board.Manual_Destroy_Ship();
+                if (gen_board_hit)
+                    Destroyed_Enemy_Ships++;
+                else 
+                    Missed_Player_Shots++;
             }
-            else
-            {
-                Missed_Player_Shots++;
-            }
-                gen_board.DisplayHidden();
+            while (gen_board_hit);
+            
+            Console.Clear();
+            Console.WriteLine("-----------------\r\nTy Strzelasz\r\n-----------------");
+            gen_board.DisplayHidden();
             Thread.Sleep(3000);
             if (Destroyed_Enemy_Ships == 10)
             {
                 Console.WriteLine("Gratulację, wygrałeś!");
-                Console.WriteLine("Liczba trafień:" + Destroyed_Enemy_Ships);
-                Console.WriteLine("Liczba niecelnych strzałów" + Missed_Player_Shots);
-                Console.WriteLine("Liczba rozegranych tur:" + Round_Count);
+                break;
             }
             Console.Clear();
-
-            ConsoleKeyInfo key = Console.ReadKey();
-            Console.WriteLine();
-            if (key.KeyChar == 'e')
-            isExit = true;
-            Round_Count++;
         }
+        Console.WriteLine("Liczba trafień:" + Destroyed_Enemy_Ships);
+        Console.WriteLine("Liczba niecelnych strzałów:" + Missed_Player_Shots);
+        Console.WriteLine("Liczba rozegranych tur:" + Round_Count);
+        Console.WriteLine("Naciśnij 'Escape', aby wyjść z gry, lub 'Enter', by spróbować ponownie.");
+        ConsoleKeyInfo key_info = Console.ReadKey();
+
+        while (key_info.Key != ConsoleKey.Enter && key_info.Key != ConsoleKey.Escape)
+        {
+            Console.WriteLine("Zły przycisk, naciśnij 'Escape', aby wyjść z gry, lub 'Enter', by spróbować ponownie.");
+            key_info = Console.ReadKey();
+        }
+
+        if (key_info.Key == ConsoleKey.Enter)
+            goto GAME_START;
     }
 }
 
@@ -81,4 +93,11 @@ enum CellState
     Miss,
     Hit,
     OutOfBounds,
+}
+
+enum HitState
+{
+    Hit,
+    Miss,
+    Occupied
 }

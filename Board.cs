@@ -60,13 +60,21 @@ class Board
         }
         return false;
     }
-    
-    public bool Destroy_Random_Cell()
+
+    public bool Destroy_Random_Ship()
     {
-        Random rand = new Random(); 
-        int x = rand.Next(0, 9);
-        int y = rand.Next(0, 9);
-        return Destroy_Cell(x, y);
+        Random rand = new Random();
+        int x, y;
+        HitState hit_state;
+        do
+        {
+            x = rand.Next(0, 9);
+            y = rand.Next(0, 9);
+            hit_state = Try_Destroy_Cell(x, y);
+        }
+        while (hit_state == HitState.Occupied);
+
+        return hit_state == HitState.Hit;
     }
 
     public bool TryAddShipWithRandDir(int x, int y, int ship_type, ref Random dir_rand)
@@ -96,7 +104,7 @@ class Board
         return false;
     }
 
-    public bool Manual_Destroy_Cell()
+    public bool Manual_Destroy_Ship()
     {
         while (true)
         {
@@ -105,7 +113,15 @@ class Board
             {
                 if (x >= 0 && x < 10 && y >= 0 && y < 10)
                 {
-                    return Destroy_Cell(x, y);
+                    HitState hit_state = Try_Destroy_Cell(x, y);
+                    if (hit_state == HitState.Occupied)
+                    {
+                        Console.WriteLine("Już strzelałeś w to pole! Spróbuj ponownie.");
+                    }
+                    else
+                    {
+                        return hit_state == HitState.Hit;
+                    }
                 }
                 else
                 {
@@ -213,7 +229,7 @@ class Board
 
         return false;
     }
-    
+
     public void Display()
     {
         Console.Write("   ");
@@ -227,7 +243,7 @@ class Board
 
         for (int y = 0; y < 10; y++)
         {
-            Console.ResetColor(); 
+            Console.ResetColor();
             Console.Write($"|{y}|");
 
             for (int x = 0; x < 10; x++)
@@ -240,13 +256,13 @@ class Board
                         Console.Write("|S|");
                         break;
                     case CellState.Miss:
-                        Console.BackgroundColor = ConsoleColor.Blue;
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
                         Console.ForegroundColor = ConsoleColor.Black;
                         Console.Write("|O|");
                         break;
                     case CellState.Hit:
-                        Console.BackgroundColor = ConsoleColor.Blue;
-                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.BackgroundColor = ConsoleColor.Red;
+                        Console.ForegroundColor = ConsoleColor.Black;
                         Console.Write("|X|");
                         break;
                     default:
@@ -342,11 +358,6 @@ class Board
         }
     }
 
-
-
-
-
-
     public void DisplayHidden()
     {
         Console.Write("   ");
@@ -367,13 +378,13 @@ class Board
                 switch (value[i, j])
                 {
                     case CellState.Miss:
-                        Console.BackgroundColor = ConsoleColor.Blue;
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
                         Console.ForegroundColor = ConsoleColor.Black;
                         Console.Write("|O|");
                         break;
                     case CellState.Hit:
-                        Console.BackgroundColor = ConsoleColor.Blue;
-                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.BackgroundColor = ConsoleColor.Red;
+                        Console.ForegroundColor = ConsoleColor.Black;
                         Console.Write("|X|");
                         break;
                     default:
@@ -399,15 +410,19 @@ class Board
         }
     }
 
-    bool Destroy_Cell(int x, int y)
+    HitState Try_Destroy_Cell(int x, int y)
     {
         if (GetCellAt(x, y) == CellState.Ship)
         {
             value[y, x] = CellState.Hit;
-            return true;
+            return HitState.Hit;
+        }
+        else if (GetCellAt(x, y) == CellState.Miss || GetCellAt(x, y) == CellState.Hit)
+        {
+            return HitState.Occupied;
         }
         value[y, x] = CellState.Miss;
-        return false;
+        return HitState.Miss;
     }
 
     public Board()
