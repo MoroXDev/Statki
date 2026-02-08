@@ -230,7 +230,7 @@ class Board
 
     public void Display()
     {
-        Console.Write("   ");
+        Console.Write("    ");
         Console.ResetColor();
 
         for (int i = 0; i < 10; i++)
@@ -358,7 +358,7 @@ class Board
 
     public void DisplayHidden()
     {
-        Console.Write("   ");
+        Console.Write("    ");
         Console.ResetColor();
 
         for (int i = 0; i < 10; i++)
