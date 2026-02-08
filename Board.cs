@@ -60,6 +60,14 @@ class Board
         }
         return false;
     }
+    
+    public bool Destroy_Random_Cell()
+    {
+        Random rand = new Random(); 
+        int x = rand.Next(0, 9);
+        int y = rand.Next(0, 9);
+        return Destroy_Cell(x, y);
+    }
 
     public bool TryAddShipWithRandDir(int x, int y, int ship_type, ref Random dir_rand)
     {
@@ -86,6 +94,29 @@ class Board
             }
         }
         return false;
+    }
+
+    public bool Manual_Destroy_Cell()
+    {
+        while (true)
+        {
+            Console.WriteLine("Podaj współrzędne celu (x y):");
+            if (int.TryParse(Console.ReadLine(), out int x) && int.TryParse(Console.ReadLine(), out int y))
+            {
+                if (x >= 0 && x < 10 && y >= 0 && y < 10)
+                {
+                    return Destroy_Cell(x, y);
+                }
+                else
+                {
+                    Console.WriteLine("Współrzędne muszą być w zakresie 0-9. Spróbuj ponownie.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Nie wpisałeś liczby całkowitej, podaj prawidłowe współrzędne: ");
+            }
+        }
     }
 
     public bool TryAddShipCells(int x, int y, int cell_count, Vector2 dir)
@@ -318,10 +349,19 @@ class Board
 
     public void DisplayHidden()
     {
+        Console.Write("   ");
         Console.ResetColor();
-        Console.Clear();
+
         for (int i = 0; i < 10; i++)
         {
+            Console.Write($"|{(char)(i + 'A')}|");
+        }
+        Console.WriteLine();
+
+        for (int i = 0; i < 10; i++)
+        {
+            Console.ResetColor();
+            Console.Write($"|{i}|");
             for (int j = 0; j < 10; j++)
             {
                 switch (value[i, j])
@@ -345,6 +385,7 @@ class Board
             }
             Console.WriteLine();
         }
+        Console.ResetColor();
     }
 
     void restart()
@@ -358,13 +399,14 @@ class Board
         }
     }
 
-    bool Kill(int x, int y)
+    bool Destroy_Cell(int x, int y)
     {
         if (GetCellAt(x, y) == CellState.Ship)
         {
             value[y, x] = CellState.Hit;
             return true;
         }
+        value[y, x] = CellState.Miss;
         return false;
     }
 

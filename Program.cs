@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Numerics;
 
 class Program
 {
@@ -12,30 +13,29 @@ class Program
 
         Board player_board = new Board();
 
-        player_board.Manual_Ships_Init();
-
-        int x = 0;
-            int y = 0;
+        player_board.GenerateRandom();
+        //player_board.Manual_Ships_Init();
 
         while (!isExit)
         {
             Console.Clear();
-            // gen_board.Display();
             player_board.Display();
-            Console.WriteLine($"{x} {y}");
+            Thread.Sleep(4000);
+            player_board.Destroy_Random_Cell();
+            Console.Clear();
+            player_board.Display();
+            Thread.Sleep(4000);
+            Console.Clear();
+            gen_board.DisplayHidden();
+            gen_board.Manual_Destroy_Cell();
+            gen_board.DisplayHidden();
+            Thread.Sleep(4000);
+            
 
             ConsoleKeyInfo key = Console.ReadKey();
             Console.WriteLine();
             if (key.KeyChar == 'e')
-                isExit = true;
-            // else if (key.Key == ConsoleKey.UpArrow)
-            // y--;
-            // else if (key.Key == ConsoleKey.DownArrow)
-            // y++;
-            // else if (key.Key == ConsoleKey.LeftArrow)
-            // x--;
-            // else if (key.Key == ConsoleKey.RightArrow)
-            // x++;
+            isExit = true;
         }
     }
 }
