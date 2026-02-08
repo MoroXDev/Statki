@@ -1,11 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Numerics;
-
-class Program
+﻿class Program
 {
     public static void Main()
     {
-        GAME_START:
+    GAME_START:
 
         Console.Title = "Statki";
 
@@ -29,46 +26,57 @@ class Program
             Console.WriteLine("-----------------\r\nPrzeciwnik Strzela\r\n-----------------");
             player_board.Display();
             Thread.Sleep(3000);
-            while (player_board.Destroy_Random_Ship())
-            {
-                Destroyed_Player_Ships++;
-            }//Przyszłościowo dodać zliczanie nietrafionych celów 2 gracza.
-            Console.Clear();
 
-            Console.WriteLine("-----------------\r\nPrzeciwnik Strzela\r\n-----------------");
-            player_board.Display();
-            Thread.Sleep(3000);
-            if (Destroyed_Player_Ships == 10)
+            bool player_board_hit;
+            do
             {
-                Console.WriteLine("Niestety przegrałeś, Spróbuj ponownie.");
-                break;
+                player_board_hit = player_board.Destroy_Random_Ship();
+                if (player_board_hit)
+                    Destroyed_Player_Ships++;
+
+                Console.Clear();
+                Console.WriteLine("-----------------\r\nPrzeciwnik Strzelił\r\n-----------------");
+                player_board.Display();
+                Thread.Sleep(3000);
+
+                if (Destroyed_Player_Ships == 10)
+                {
+                    Console.WriteLine("Niestety przegrałeś, Spróbuj ponownie.");
+                    goto END_SCREEN;
+                }
             }
+            while (player_board_hit);
+
 
             Console.Clear();
             Console.WriteLine("-----------------\r\nTy Strzelasz\r\n-----------------");
             gen_board.DisplayHidden();
+
             bool gen_board_hit;
             do
             {
                 gen_board_hit = gen_board.Manual_Destroy_Ship();
                 if (gen_board_hit)
                     Destroyed_Enemy_Ships++;
-                else 
+                else
                     Missed_Player_Shots++;
+
+                Console.Clear();
+                Console.WriteLine("-----------------\r\nTy Strzeliłeś\r\n-----------------");
+                gen_board.DisplayHidden();
+
+                if (Destroyed_Enemy_Ships == 10)
+                {
+                    Console.WriteLine("Gratulację, wygrałeś!");
+                    goto END_SCREEN;
+                }
             }
             while (gen_board_hit);
-            
-            Console.Clear();
-            Console.WriteLine("-----------------\r\nTy Strzelasz\r\n-----------------");
-            gen_board.DisplayHidden();
             Thread.Sleep(3000);
-            if (Destroyed_Enemy_Ships == 10)
-            {
-                Console.WriteLine("Gratulację, wygrałeś!");
-                break;
-            }
+
             Console.Clear();
         }
+        END_SCREEN:
         Console.WriteLine("Liczba trafień:" + Destroyed_Enemy_Ships);
         Console.WriteLine("Liczba niecelnych strzałów:" + Missed_Player_Shots);
         Console.WriteLine("Liczba rozegranych tur:" + Round_Count);
@@ -85,6 +93,7 @@ class Program
             goto GAME_START;
     }
 }
+
 
 enum CellState
 {

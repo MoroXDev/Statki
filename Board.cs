@@ -1,9 +1,6 @@
-using System.ComponentModel.DataAnnotations;
-using System.Drawing;
 using System.Numerics;
-using System.Security.Cryptography.X509Certificates;
 class Board
-{
+{ 
     CellState[,] value = new CellState[10, 10];
     readonly Vector2[] dirs_around = {
         new (1, 0),
@@ -17,7 +14,7 @@ class Board
     };
 
     public void GenerateRandom()
-    {
+    { 
         int[] rand_row = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
         int[] rand_col = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
         Random rand = new Random();
@@ -108,12 +105,13 @@ class Board
     {
         while (true)
         {
-            Console.WriteLine("Podaj współrzędne celu (x y):");
-            if (int.TryParse(Console.ReadLine(), out int x) && int.TryParse(Console.ReadLine(), out int y))
+            Console.WriteLine("Podaj współrzędne celu (A-J 1-10):");
+            if (char.TryParse(Console.ReadLine(), out char x) && int.TryParse(Console.ReadLine(), out int y))
             {
-                if (x >= 0 && x < 10 && y >= 0 && y < 10)
+                x = char.ToUpper(x);
+                if (x >= 'A' && x <= 'J' && y >= 1 && y <= 10)
                 {
-                    HitState hit_state = Try_Destroy_Cell(x, y);
+                    HitState hit_state = Try_Destroy_Cell(x - 'A', y - 1);
                     if (hit_state == HitState.Occupied)
                     {
                         Console.WriteLine("Już strzelałeś w to pole! Spróbuj ponownie.");
@@ -125,12 +123,12 @@ class Board
                 }
                 else
                 {
-                    Console.WriteLine("Współrzędne muszą być w zakresie 0-9. Spróbuj ponownie.");
+                    Console.WriteLine("Podałeś współrzędne poza planszą. Spróbuj ponownie.");
                 }
             }
             else
             {
-                Console.WriteLine("Nie wpisałeś liczby całkowitej, podaj prawidłowe współrzędne: ");
+                Console.WriteLine("Podałeś nieprawidłowe współrzędne. Spróbuj ponownie.");
             }
         }
     }
@@ -244,7 +242,7 @@ class Board
         for (int y = 0; y < 10; y++)
         {
             Console.ResetColor();
-            Console.Write($"|{y}|");
+            Console.Write($"|{y + 1}|".PadLeft(4));
 
             for (int x = 0; x < 10; x++)
             {
@@ -372,7 +370,7 @@ class Board
         for (int i = 0; i < 10; i++)
         {
             Console.ResetColor();
-            Console.Write($"|{i}|");
+            Console.Write($"|{i + 1}|".PadLeft(4));
             for (int j = 0; j < 10; j++)
             {
                 switch (value[i, j])
