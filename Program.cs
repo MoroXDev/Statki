@@ -55,7 +55,7 @@
             bool gen_board_hit;
             do
             {
-                gen_board_hit = gen_board.Manual_Destroy_Ship();
+                gen_board_hit = gen_board.Manual_Destroy_Ship(out bool ship_destroyed);
                 if (gen_board_hit)
                     Destroyed_Enemy_Ships++;
                 else
