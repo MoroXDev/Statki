@@ -101,8 +101,9 @@ class Board
         return false;
     }
 
-    public bool Manual_Destroy_Ship()
+    public bool Manual_Destroy_Ship(out bool is_ship_destroyed)
     {
+        is_ship_destroyed = false;
         while (true)
         {
             Console.WriteLine("Podaj współrzędne celu (A-J 1-10):");
@@ -297,19 +298,50 @@ class Board
         while (Ship_Count < 10)
         {
             Display();
-
-            Console.WriteLine("Podaj współrzędne początku statku (x y):");
-            while (!int.TryParse(Console.ReadLine(), out Start_X) || !int.TryParse(Console.ReadLine(), out Start_Y))
+            bool valid_input = false;
+            do
             {
-                Console.WriteLine("Nie wpisałeś liczby całkowitej, podaj prawidłowe współrzędne: ");
-            }
+                Console.WriteLine("Podaj współrzędne Startu (A-J 1-10):");
+                if (char.TryParse(Console.ReadLine(), out char x) && int.TryParse(Console.ReadLine(), out int y))
+                {
+                    x = char.ToUpper(x);
+                    if (x >= 'A' && x <= 'J' && y >= 1 && y <= 10)
+                    {
+                        Start_X = x - 'A';
+                        Start_Y = y;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Podałeś współrzędne poza planszą. Spróbuj ponownie.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Podałeś nieprawidłowe współrzędne. Spróbuj ponownie.");
+                }
+            } while (valid_input == true);
 
-            Console.WriteLine("Podaj współrzędne końca statku (x y):");
-            while (!int.TryParse(Console.ReadLine(), out End_X) || !int.TryParse(Console.ReadLine(), out End_Y))
+            do
             {
-                Console.WriteLine("Nie wpisałeś liczby całkowitej, podaj prawidłowe współrzędne: ");
-            }
-
+                Console.WriteLine("Podaj współrzędne Końca (A-J 1-10):");
+                if (char.TryParse(Console.ReadLine(), out char x) && int.TryParse(Console.ReadLine(), out int y))
+                {
+                    x = char.ToUpper(x);
+                    if (x >= 'A' && x <= 'J' && y >= 1 && y <= 10)
+                    {
+                        End_X = x - 'A';
+                        End_Y = y;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Podałeś współrzędne poza planszą. Spróbuj ponownie.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Podałeś nieprawidłowe współrzędne. Spróbuj ponownie.");
+                }
+            } while (valid_input == true);
 
 
             if (Board.TryGetShipLength(Start_X, Start_Y, End_X, End_Y, out int size))

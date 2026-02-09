@@ -11,8 +11,8 @@
 
         Board player_board = new Board();
 
-        player_board.GenerateRandom();
-        //player_board.Manual_Ships_Init();
+        //player_board.GenerateRandom();
+        player_board.Manual_Ships_Init();
 
         int Destroyed_Player_Ships = 0;
         int Destroyed_Enemy_Ships = 0;
@@ -51,11 +51,11 @@
             Console.Clear();
             Console.WriteLine("-----------------\r\nTy Strzelasz\r\n-----------------");
             gen_board.DisplayHidden();
-
+            bool ship_destroyed;
             bool gen_board_hit;
             do
             {
-                gen_board_hit = gen_board.Manual_Destroy_Ship(out bool ship_destroyed);
+                gen_board_hit = gen_board.Manual_Destroy_Ship(out ship_destroyed);
                 if (gen_board_hit)
                     Destroyed_Enemy_Ships++;
                 else
