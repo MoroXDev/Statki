@@ -13,6 +13,13 @@ class Board
         new (1, -1),
     };
 
+    Vector2[] directions ={
+        new (-1, 0), // LEFT
+        new (1, 0),  // RIGHT
+        new (0, -1), // UP
+        new (0, 1)   // DOWN
+    };
+
     public void GenerateRandom()
     {
         int[] rand_row = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
@@ -80,13 +87,7 @@ class Board
         {
             int cell_count = 5 - ship_type;
 
-            Vector2[] directions =
-            {
-                new (-1, 0), // LEFT
-                new (1, 0),  // RIGHT
-                new (0, -1), // UP
-                new (0, 1)   // DOWN
-            };
+
 
             dir_rand.Shuffle(directions);
 
@@ -103,9 +104,9 @@ class Board
 
     public bool Manual_Destroy_Ship(out bool is_ship_destroyed)
     {
-        is_ship_destroyed = false;
         while (true)
         {
+            Console.WriteLine("Podaj współrzędne ataku (A-J 1-10):");
             ReceiveCordinatesInput(out int x, out int y);
             HitState hit_state = Try_Destroy_Cell(x, y);
             if (hit_state == HitState.Occupied)
@@ -114,9 +115,33 @@ class Board
             }
             else
             {
+                if (hit_state == HitState.Hit)
+                    is_ship_destroyed = IsShipDestroyed(new Vector2(x, y));
+                else
+                    is_ship_destroyed = false;
+
                 return hit_state == HitState.Hit;
             }
         }
+    }
+
+    public bool IsShipDestroyed(Vector2 pos)
+    {
+        foreach (var dir in directions)
+        {
+            CellState c_state;
+            int i = 1;
+            do
+            {
+                c_state = GetCellAt(pos + dir * i);
+                if (c_state == CellState.Ship)
+                    return false;
+                i++;
+            }
+            while (c_state == CellState.Hit);
+        }
+
+        return true;
     }
 
     public bool TryAddShipCells(int x, int y, int cell_count, Vector2 dir)
@@ -334,6 +359,7 @@ class Board
 
         while (Ship_Count < 10)
         {
+            Console.WriteLine("Dostępne Statki:");
             DisplayAvailableShips(ref Size_AvailableCount);
             Display();
 

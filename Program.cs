@@ -51,11 +51,12 @@
             Console.Clear();
             Console.WriteLine("-----------------\r\nTy Strzelasz\r\n-----------------");
             gen_board.DisplayHidden();
-            bool ship_destroyed;
+
             bool gen_board_hit;
             do
             {
-                gen_board_hit = gen_board.Manual_Destroy_Ship(out ship_destroyed);
+                gen_board_hit = gen_board.Manual_Destroy_Ship(out bool is_ship_destroyed);
+
                 if (gen_board_hit)
                     Destroyed_Enemy_Ships++;
                 else
@@ -64,6 +65,15 @@
                 Console.Clear();
                 Console.WriteLine("-----------------\r\nTy Strzeliłeś\r\n-----------------");
                 gen_board.DisplayHidden();
+                if (gen_board_hit)
+                {
+                    if (is_ship_destroyed)
+                        Console.WriteLine("Zatopiony!");
+                    else
+                        Console.WriteLine("Trafiony!");
+                }
+                else
+                    Console.WriteLine("Pudło!");
 
                 if (Destroyed_Enemy_Ships == 10)
                 {
@@ -76,7 +86,7 @@
 
             Console.Clear();
         }
-        END_SCREEN:
+    END_SCREEN:
         Console.WriteLine("Liczba trafień:" + Destroyed_Enemy_Ships);
         Console.WriteLine("Liczba niecelnych strzałów:" + Missed_Player_Shots);
         Console.WriteLine("Liczba rozegranych tur:" + Round_Count);
