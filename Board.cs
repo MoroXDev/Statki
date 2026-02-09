@@ -1,6 +1,6 @@
 using System.Numerics;
 class Board
-{ 
+{
     CellState[,] value = new CellState[10, 10];
     readonly Vector2[] dirs_around = {
         new (1, 0),
@@ -14,7 +14,7 @@ class Board
     };
 
     public void GenerateRandom()
-    { 
+    {
         int[] rand_row = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
         int[] rand_col = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
         Random rand = new Random();
@@ -106,30 +106,15 @@ class Board
         is_ship_destroyed = false;
         while (true)
         {
-            Console.WriteLine("Podaj współrzędne celu (A-J 1-10):");
-            if (char.TryParse(Console.ReadLine(), out char x) && int.TryParse(Console.ReadLine(), out int y))
+            ReceiveCordinatesInput(out int x, out int y);
+            HitState hit_state = Try_Destroy_Cell(x, y);
+            if (hit_state == HitState.Occupied)
             {
-                x = char.ToUpper(x);
-                if (x >= 'A' && x <= 'J' && y >= 1 && y <= 10)
-                {
-                    HitState hit_state = Try_Destroy_Cell(x - 'A', y - 1);
-                    if (hit_state == HitState.Occupied)
-                    {
-                        Console.WriteLine("Już strzelałeś w to pole! Spróbuj ponownie.");
-                    }
-                    else
-                    {
-                        return hit_state == HitState.Hit;
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Podałeś współrzędne poza planszą. Spróbuj ponownie.");
-                }
+                Console.WriteLine("Już strzelałeś w to pole! Spróbuj ponownie.");
             }
             else
             {
-                Console.WriteLine("Podałeś nieprawidłowe współrzędne. Spróbuj ponownie.");
+                return hit_state == HitState.Hit;
             }
         }
     }
@@ -276,6 +261,58 @@ class Board
         Console.ResetColor();
     }
 
+    void ReceiveCordinatesInput(out int x_out, out int y_out)
+    {
+        x_out = 0;
+        y_out = 0;
+        bool valid_input = false;
+        do
+        {
+            Console.Write("(A-J):");
+            bool is_letter_valid = char.TryParse(Console.ReadLine(), out char x);
+            Console.Write("(1-10):");
+            bool is_number_valid = int.TryParse(Console.ReadLine(), out int y);
+            if (is_letter_valid && is_number_valid)
+            {
+                x = char.ToUpper(x);
+                if (x >= 'A' && x <= 'J' && y >= 1 && y <= 10)
+                {
+                    x_out = x - 'A';
+                    y_out = y - 1;
+                    valid_input = true;
+                }
+                else
+                {
+                    Console.WriteLine("Podałeś współrzędne poza planszą. Spróbuj ponownie.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Podałeś nieprawidłowe współrzędne. Spróbuj ponownie.");
+            }
+        } while (!valid_input);
+    }
+
+    void DisplayAvailableShips(ref Dictionary<int, int> Size_AvailableCount)
+    {
+        int i = 0;
+        foreach (var size_count in Size_AvailableCount.Reverse())
+        {
+            i++;
+            Console.Write(i + ".");
+            for (int count = 0; count < size_count.Value; count++)
+            {
+                for (int size = 0; size < size_count.Key; size++)
+                {
+                    Console.Write("|X|");
+                }
+                Console.Write("   ");
+            }
+            Console.WriteLine();
+        }
+        Console.WriteLine();
+    }
+
     public void Manual_Ships_Init()
     {
         int Start_X = 0, Start_Y = 0, End_X = 0, End_Y = 0;
@@ -297,53 +334,16 @@ class Board
 
         while (Ship_Count < 10)
         {
+            DisplayAvailableShips(ref Size_AvailableCount);
             Display();
-            bool valid_input = false;
-            do
-            {
-                Console.WriteLine("Podaj współrzędne Startu (A-J 1-10):");
-                if (char.TryParse(Console.ReadLine(), out char x) && int.TryParse(Console.ReadLine(), out int y))
-                {
-                    x = char.ToUpper(x);
-                    if (x >= 'A' && x <= 'J' && y >= 1 && y <= 10)
-                    {
-                        Start_X = x - 'A';
-                        Start_Y = y;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Podałeś współrzędne poza planszą. Spróbuj ponownie.");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Podałeś nieprawidłowe współrzędne. Spróbuj ponownie.");
-                }
-            } while (valid_input == true);
-
-            do
-            {
-                Console.WriteLine("Podaj współrzędne Końca (A-J 1-10):");
-                if (char.TryParse(Console.ReadLine(), out char x) && int.TryParse(Console.ReadLine(), out int y))
-                {
-                    x = char.ToUpper(x);
-                    if (x >= 'A' && x <= 'J' && y >= 1 && y <= 10)
-                    {
-                        End_X = x - 'A';
-                        End_Y = y;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Podałeś współrzędne poza planszą. Spróbuj ponownie.");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Podałeś nieprawidłowe współrzędne. Spróbuj ponownie.");
-                }
-            } while (valid_input == true);
 
 
+            Console.WriteLine("Podaj współrzędne Startu (A-J 1-10):");
+            ReceiveCordinatesInput(out Start_X, out Start_Y);
+            Console.WriteLine("Podaj współrzędne Końca (A-J 1-10):");
+            ReceiveCordinatesInput(out End_X, out End_Y);
+
+            bool ship_added = false;
             if (Board.TryGetShipLength(Start_X, Start_Y, End_X, End_Y, out int size))
             {
                 if (Size_AvailableCount.TryGetValue(size, out int count))
@@ -354,36 +354,34 @@ class Board
                         {
                             Size_AvailableCount[size]--;
                             Ship_Count++;
+                            ship_added = true;
                         }
                         else
                         {
                             Console.WriteLine("Statek koliduje z statkami lub wychodzi poza plansze!");
-                            Console.WriteLine("Kliknij cokolwiek, aby kontynuować");
-                            Console.ReadKey();
                         }
                     }
                     else
                     {
                         Console.WriteLine("Nie ma już dostępnej wielkości statku: " + size + " Wstaw statek innej wielkości.");
-                        Console.WriteLine("Kliknij cokolwiek, aby kontynuować");
-                        Console.ReadKey();
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Wstawiałeś złą wielkość statku, wybierz poprawną wielkość statku.");
-                    Console.WriteLine("Kliknij cokolwiek, aby kontynuować");
-                    Console.ReadKey();
+                    Console.WriteLine("Wstawiłeś złą wielkość statku, wybierz poprawną wielkość statku.");
                 }
 
             }
             else
             {
                 Console.WriteLine("Statek jest za wielki, jego szerokość i wysokość są naraz większe od 1 pola, spróbuj ponownie.");
+            }
+
+            if (!ship_added)
+            {
                 Console.WriteLine("Kliknij cokolwiek, aby kontynuować");
                 Console.ReadKey();
             }
-
             Console.Clear();
         }
     }
