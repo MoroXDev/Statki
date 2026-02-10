@@ -1,4 +1,5 @@
 using System.Numerics;
+using System.Xml.Linq;
 class Board
 {
     CellState[,] value = new CellState[10, 10];
@@ -294,11 +295,15 @@ class Board
         do
         {
             Console.Write("(A-J):");
-            bool is_letter_valid = char.TryParse(Console.ReadLine(), out char x);
+            string? x_str = Console.ReadLine()?.Trim();
+            bool is_letter_valid = x_str?.Count() == 1;
+
             Console.Write("(1-10):");
             bool is_number_valid = int.TryParse(Console.ReadLine(), out int y);
-            if (is_letter_valid && is_number_valid)
+            
+            if (is_letter_valid && is_number_valid && x_str != null)
             {
+                char x = x_str[0];
                 x = char.ToUpper(x);
                 if (x >= 'A' && x <= 'J' && y >= 1 && y <= 10)
                 {
@@ -354,11 +359,11 @@ class Board
 
 
         Console.WriteLine("Witaj użytkowniku!");
-        Console.WriteLine("Podaj współrzędne aby rozstawić statki.");
 
 
         while (Ship_Count < 10)
         {
+            Console.WriteLine("Podaj współrzędne aby rozstawić statki.");
             Console.WriteLine("Dostępne Statki:");
             DisplayAvailableShips(ref Size_AvailableCount);
             Display();
