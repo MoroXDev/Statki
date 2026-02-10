@@ -1,8 +1,10 @@
-﻿class Program
+﻿public class Program
 {
-    public static void Main()
+    static void Main()
     {
     GAME_START:
+
+        Console.WriteLine(Board.Logo);
 
         Console.Title = "Statki";
 
@@ -100,9 +102,13 @@
         }
 
         if (key_info.Key == ConsoleKey.Enter)
+        {
             goto GAME_START;
+        }
     }
 }
+
+
 
 
 enum CellState
@@ -120,3 +126,5 @@ enum HitState
     Miss,
     Occupied
 }
+
+
