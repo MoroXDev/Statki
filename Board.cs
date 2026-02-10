@@ -354,11 +354,11 @@ class Board
 
 
         Console.WriteLine("Witaj użytkowniku!");
-        Console.WriteLine("Podaj współrzędne aby rozstawić statki.");
 
 
         while (Ship_Count < 10)
         {
+            Console.WriteLine("Podaj współrzędne aby rozstawić statki.");
             Console.WriteLine("Dostępne Statki:");
             DisplayAvailableShips(ref Size_AvailableCount);
             Display();
