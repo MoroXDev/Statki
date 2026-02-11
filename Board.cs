@@ -1,4 +1,5 @@
 using System.Numerics;
+using System.Text;
 using System.Xml.Linq;
 class Board
 {
@@ -325,20 +326,31 @@ class Board
 
     void DisplayAvailableShips(ref Dictionary<int, int> Size_AvailableCount)
     {
+        StringBuilder[] ships = new StringBuilder[Size_AvailableCount.Count];
+        
+        int highest_str_length = 0;        
         int i = 0;
         foreach (var size_count in Size_AvailableCount.Reverse())
         {
-            i++;
-            Console.Write(i + ".");
+            ships[i] = new StringBuilder();
             for (int count = 0; count < size_count.Value; count++)
             {
                 for (int size = 0; size < size_count.Key; size++)
                 {
-                    Console.Write("|X|");
+                    ships[i].Append("|X|");
                 }
-                Console.Write("   ");
+                ships[i].Append("  ");
             }
-            Console.WriteLine();
+            highest_str_length = ships[i].Length > highest_str_length ? ships[i].Length : highest_str_length;
+            
+            i++;
+        }
+
+        for (int j =  0; j < ships.Count(); j++)
+        {
+            Console.Write((j + 1) + ".");
+            ships[j].Insert(0, " ", (highest_str_length - ships[j].Length) / 2);
+            Console.WriteLine(ships[j]);
         }
         Console.WriteLine();
     }
