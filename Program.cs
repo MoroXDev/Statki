@@ -41,7 +41,7 @@
                 player_board.Display();
                 Thread.Sleep(3000);
 
-                if (Destroyed_Player_Ships == 10)
+                if (Destroyed_Player_Ships == 20)
                 {
                     Console.WriteLine("Niestety przegrałeś, Spróbuj ponownie.");
                     goto END_SCREEN;
@@ -77,7 +77,7 @@
                 else
                     Console.WriteLine("Pudło!");
 
-                if (Destroyed_Enemy_Ships == 10)
+                if (Destroyed_Enemy_Ships == 20)
                 {
                     Console.WriteLine("Gratulację, wygrałeś!");
                     goto END_SCREEN;
